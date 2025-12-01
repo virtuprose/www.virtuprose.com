@@ -128,17 +128,17 @@ export function SiteNav() {
       ref={(node) => {
         containerRef.current = node;
       }}
-      className="sticky top-0 z-40 w-full border-b border-[var(--border)] bg-[var(--bg)]/95 px-4 shadow-[0_10px_40px_rgba(0,0,0,0.18)] backdrop-blur-xl"
+      className="sticky top-0 z-40 w-full border-b border-[var(--border)] bg-[var(--bg)]/95 px-4 shadow-[0_10px_40px_rgba(0,0,0,0.18)] backdrop-blur-xl overflow-hidden"
     >
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4">
-        <Link href="/" className="flex items-center gap-3">
-          <div className="relative h-[2.6rem] w-36">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-2 sm:gap-4 min-w-0">
+        <Link href="/" className="flex items-center gap-3 flex-shrink-0 min-w-0">
+          <div className="relative h-[2.6rem] w-28 sm:w-36 flex-shrink-0">
             <Image
               src="/newbranding/logo-light.svg"
               alt="VirtuProse logo"
               fill
               className="object-contain dark:hidden"
-              sizes="128px"
+              sizes="(max-width: 640px) 112px, 144px"
               priority
             />
             <Image
@@ -146,7 +146,7 @@ export function SiteNav() {
               alt="VirtuProse logo"
               fill
               className="hidden object-contain dark:block"
-              sizes="128px"
+              sizes="(max-width: 640px) 112px, 144px"
               priority
             />
           </div>

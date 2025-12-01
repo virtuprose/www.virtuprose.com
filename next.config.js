@@ -1,23 +1,24 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Force Next.js 16 to use Webpack instead of Turbopack
-  experimental: {
-    turbo: false
-  },
-
   images: {
     unoptimized: true,
   },
 
   // Force a unique build ID for every deployment (cache busting)
   generateBuildId: async () => {
-    return `${Date.now()}`;
+    // Use timestamp + random string for better cache busting
+    // This ensures every build has a unique ID
+    const timestamp = Date.now();
+    const random = Math.random().toString(36).substring(2, 9);
+    return `build-${timestamp}-${random}`;
   },
 
-  // Cache-control headers
+  // Cache-control headers for better cache management
+  // IMPORTANT: More specific patterns must come FIRST (Next.js evaluates in order)
   async headers() {
     return [
       {
+        // Next.js static assets with content hashes - can be cached forever
         source: "/_next/static/:path*",
         headers: [
           {
@@ -27,22 +28,64 @@ const nextConfig = {
         ],
       },
       {
-        source: "/:path*",
+        // Static files with extensions in public folder - cache with versioning
+        source: "/:path*\\.(svg|jpg|jpeg|png|gif|ico|webp|woff|woff2|ttf|eot)",
         headers: [
-          { key: "Cache-Control", value: "no-store, must-revalidate" },
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
+        // Public assets folder - long cache
+        source: "/assets/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=86400, must-revalidate",
+          },
+        ],
+      },
+      {
+        // API routes - no cache
+        source: "/api/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "no-store, no-cache, must-revalidate, max-age=0",
+          },
           { key: "Pragma", value: "no-cache" },
           { key: "Expires", value: "0" },
+        ],
+      },
+      {
+        // HTML pages - aggressive no-cache to ensure fresh content
+        source: "/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0",
+          },
+          { key: "Pragma", value: "no-cache" },
+          { key: "Expires", value: "0" },
+          { 
+            key: "X-Content-Type-Options", 
+            value: "nosniff" 
+          },
         ],
       },
     ];
   },
 
-  // Webpack: hashed filenames to prevent stale caching
-  webpack(config) {
-    config.output.filename = "static/chunks/[name].[contenthash].js";
-    config.output.chunkFilename = "static/chunks/[name].[contenthash].js";
-    return config;
-  },
+  // Enable SWC minification for better performance
+  swcMinify: true,
+
+  // Compress responses
+  compress: true,
+
+  // Production source maps can be disabled for security
+  productionBrowserSourceMaps: false,
 };
 
 module.exports = nextConfig;

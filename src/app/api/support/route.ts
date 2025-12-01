@@ -23,7 +23,7 @@ export async function POST(request: Request) {
       },
     });
 
-    const toAddress = process.env.SUPPORT_INBOX ?? "support@virturprose.com";
+    const toAddress = process.env.SUPPORT_INBOX ?? "support@virtuprose.com";
     const fromAddress = process.env.CONTACT_FROM ?? `"VirtuProse Support" <${process.env.SMTP_USER as string}>`;
 
     await transporter.sendMail({
@@ -54,6 +54,6 @@ If your request is urgent, reply to this email and include URGENT in the subject
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("[support-form]", error);
-    return NextResponse.json({ error: "Unable to send your request. Please email support@virturprose.com." }, { status: 500 });
+    return NextResponse.json({ error: "Unable to send your request. Please email support@virtuprose.com." }, { status: 500 });
   }
 }

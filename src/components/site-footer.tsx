@@ -38,13 +38,15 @@ export function SiteFooter() {
         <div className="grid gap-8 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
           <div className="space-y-4">
             <div className="inline-flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 backdrop-blur">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--bg)]">
+              <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-[var(--bg)]">
                 <Image
                   src="/newbranding/icon-light.svg"
                   alt="VirtuProse icon"
                   width={44}
                   height={44}
                   className="dark:hidden"
+                  priority
+                  unoptimized
                 />
                 <Image
                   src="/newbranding/icon-dark.svg"
@@ -52,6 +54,8 @@ export function SiteFooter() {
                   width={44}
                   height={44}
                   className="hidden dark:block"
+                  priority
+                  unoptimized
                 />
               </div>
               <div>

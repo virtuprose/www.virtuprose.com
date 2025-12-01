@@ -97,6 +97,10 @@
     min-height: 100vh;
     background-color: var(--bg);
     color: var(--text-body);
+    font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 }
 
@@ -648,6 +652,48 @@ a {
 
 section {
   padding: 5rem clamp(1.5rem, 5vw, 5rem);
+}
+
+/* Mobile spacing optimizations */
+@media (max-width: 768px) {
+  section {
+    padding: 3rem 1rem;
+  }
+  
+  /* Better spacing between sections on mobile */
+  .space-y-12 > * + * {
+    margin-top: 2rem;
+  }
+  
+  .space-y-8 > * + * {
+    margin-top: 1.5rem;
+  }
+  
+  /* Optimize padding in cards and containers */
+  .p-10,
+  [class*="p-10"] {
+    padding: 1.5rem !important;
+  }
+  
+  .gap-12,
+  [class*="gap-12"] {
+    gap: 2rem !important;
+  }
+  
+  .gap-8,
+  [class*="gap-8"] {
+    gap: 1.5rem !important;
+  }
+  
+  /* Optimize rounded corners on mobile */
+  .rounded-\[32px\] {
+    border-radius: 1.5rem;
+  }
+  
+  /* Reduce shadow on mobile for performance */
+  [class*="shadow"] {
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08) !important;
+  }
 }
 
 .section-heading {
@@ -2316,17 +2362,146 @@ body.dark .codex-button:hover * {
   }
 }
 
-@media (max-width: 640px) {
+/* Mobile optimizations for Orvia chat - iPhone and Android */
+@media (max-width: 768px) {
   .orvia-launcher {
     right: 1rem;
     bottom: 1rem;
-    padding: 0.7rem 1rem;
+    z-index: 40;
+  }
+
+  .orvia-launcher-lottie {
+    width: 70px;
+    height: 70px;
+  }
+
+  .orvia-launcher-logo {
+    width: 50px;
   }
 
   .orvia-chat-panel {
-    width: calc(100% - 2rem);
-    left: 1rem;
-    right: 1rem;
-    bottom: 4.5rem;
+    width: 100vw;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    border-radius: 0;
+    max-height: 100vh;
+    max-width: 100vw;
+    padding: 1rem;
+    position: fixed;
+    z-index: 50;
+  }
+
+  .orvia-chat-panel.full {
+    width: 100vw;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    max-height: 100vh;
+    border-radius: 0;
+  }
+
+  .orvia-chat-panel {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    height: 100dvh; /* Dynamic viewport height - adjusts when keyboard appears */
+    max-height: 100vh;
+    max-height: 100dvh;
+    overflow: hidden;
+  }
+
+  .orvia-chat-messages {
+    flex: 1 1 auto;
+    min-height: 0; /* Critical: allows flex item to shrink below content size */
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    /* Dynamic height that adjusts when keyboard opens */
+    max-height: calc(100dvh - 180px);
+    transition: max-height 0.3s ease-out;
+    will-change: max-height;
+  }
+  
+  /* When keyboard is detected, reduce messages area */
+  .orvia-chat-panel.keyboard-open .orvia-chat-messages {
+    max-height: calc(100dvh - 280px);
+  }
+
+  .orvia-chat-input {
+    flex-shrink: 0;
+    position: relative;
+    background: inherit;
+    padding-top: 0.5rem;
+    padding-bottom: env(safe-area-inset-bottom, 0.5rem);
+    border-top: 1px solid var(--border);
+    z-index: 10;
+  }
+  
+  .orvia-chat-input input {
+    font-size: 16px; /* Prevents zoom on iOS */
+    padding: 0.75rem 1rem;
+    /* Ensure input is above keyboard */
+    position: relative;
+    z-index: 11;
+  }
+  
+  .orvia-chat-header {
+    flex-shrink: 0;
+    padding-top: env(safe-area-inset-top, 0);
+  }
+
+  /* iOS Safari viewport fix */
+  @supports (-webkit-touch-callout: none) {
+    .orvia-chat-panel {
+      height: -webkit-fill-available;
+      height: 100dvh;
+      max-height: -webkit-fill-available;
+      max-height: 100dvh;
+    }
+    
+    .orvia-chat-messages {
+      /* Dynamic height that adjusts when keyboard appears */
+      max-height: calc(100dvh - 180px);
+      transition: max-height 0.3s ease-out;
+    }
+    
+    /* When keyboard is open, adjust messages area */
+    .orvia-chat-panel.keyboard-open .orvia-chat-messages {
+      max-height: calc(100dvh - 280px);
+    }
+    
+    /* Prevent body scroll when chat is open on iOS */
+    body:has(.orvia-chat-panel.open) {
+      position: fixed;
+      width: 100%;
+      overflow: hidden;
+      height: 100%;
+      height: 100dvh;
+    }
+  }
+  
+  /* Android keyboard handling */
+  @media (max-width: 768px) {
+    .orvia-chat-panel {
+      /* Use dynamic viewport units for better keyboard handling */
+      height: 100dvh;
+      max-height: 100dvh;
+    }
+    
+    /* Smooth transition when keyboard appears/disappears */
+    .orvia-chat-messages {
+      transition: max-height 0.25s ease-out, transform 0.25s ease-out;
+    }
+    
+    /* Ensure input stays visible */
+    .orvia-chat-input {
+      position: sticky;
+      bottom: 0;
+      transform: translateZ(0); /* Force hardware acceleration */
+    }
   }
 }

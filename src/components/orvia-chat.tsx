@@ -21,8 +21,10 @@ export function OrviaChat() {
   const [isLoading, setIsLoading] = useState(false);
   const [showTooltip, setShowTooltip] = useState(true);
   const [isFullScreen, setIsFullScreen] = useState(false);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const panelRef = useRef<HTMLDivElement | null>(null);
 
   const sendText = useCallback(
     async (text: string) => {
@@ -75,22 +77,51 @@ export function OrviaChat() {
     };
     window.addEventListener("open-orvia-chat", handleOpen as EventListener);
     const tooltipTimer = window.setTimeout(() => setShowTooltip(false), 60000);
-    const handleResize = () => setIsFullScreen(window.innerWidth <= 640);
+    
+    // Better mobile detection - check for touch devices and small screens
+    const handleResize = () => {
+      const isMobileScreen = window.innerWidth <= 768;
+      const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      setIsFullScreen(isMobileScreen || isTouchDevice);
+    };
     handleResize();
     window.addEventListener("resize", handleResize);
+    window.addEventListener("orientationchange", handleResize);
+    
     return () => {
       window.clearTimeout(tooltipTimer);
       window.removeEventListener("resize", handleResize);
+      window.removeEventListener("orientationchange", handleResize);
       window.removeEventListener("open-orvia-chat", handleOpen as EventListener);
     };
   }, [sendText]);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    if (isOpen) {
-      inputRef.current?.focus();
+    if (messagesEndRef.current) {
+      // Use setTimeout to ensure DOM is updated
+      setTimeout(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }, 100);
     }
-  }, [messages, isOpen]);
+    if (isOpen && !isLoading) {
+      // Delay focus slightly for mobile to prevent keyboard jump
+      const focusTimer = setTimeout(() => {
+        inputRef.current?.focus();
+      }, 300);
+      return () => clearTimeout(focusTimer);
+    }
+  }, [messages, isOpen, isLoading]);
+
+  // Scroll to bottom when keyboard opens or new message arrives
+  useEffect(() => {
+    if (keyboardHeight > 0 && messagesEndRef.current) {
+      // Wait for keyboard animation to complete
+      const scrollTimer = setTimeout(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+      }, 350);
+      return () => clearTimeout(scrollTimer);
+    }
+  }, [keyboardHeight, messages]);
 
   async function sendMessage(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -99,9 +130,113 @@ export function OrviaChat() {
   }
 
   const panelClassName = useMemo(
-    () => `orvia-chat-panel${isOpen ? " open" : ""}${isFullScreen ? " full" : ""}`,
-    [isOpen, isFullScreen],
+    () => 
+      `orvia-chat-panel${isOpen ? " open" : ""}${isFullScreen ? " full" : ""}${keyboardHeight > 0 ? " keyboard-open" : ""}`,
+    [isOpen, isFullScreen, keyboardHeight],
   );
+
+  // Handle keyboard visibility on mobile
+  useEffect(() => {
+    if (!isFullScreen || !isOpen) {
+      setKeyboardHeight(0);
+      return;
+    }
+
+    const getViewportHeight = () => window.visualViewport?.height || window.innerHeight;
+    const getScreenHeight = () => window.screen.height;
+    
+    // Store initial height when chat opens
+    const initialHeight = getViewportHeight();
+    const screenHeight = getScreenHeight();
+    let timeoutId: NodeJS.Timeout;
+
+    const checkKeyboard = () => {
+      const currentHeight = getViewportHeight();
+      const heightDiff = initialHeight - currentHeight;
+      
+      // Keyboard is likely open if viewport shrunk significantly (more than 150px)
+      if (heightDiff > 150) {
+        setKeyboardHeight(heightDiff);
+        // Scroll to bottom when keyboard opens
+        setTimeout(() => {
+          messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+        }, 100);
+      } else {
+        setKeyboardHeight(0);
+      }
+    };
+
+    const handleViewportResize = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(checkKeyboard, 100);
+    };
+
+    const handleFocus = () => {
+      // Give keyboard time to fully open
+      setTimeout(checkKeyboard, 350);
+    };
+
+    const handleBlur = () => {
+      setKeyboardHeight(0);
+    };
+
+    // Use Visual Viewport API (best for mobile keyboard detection)
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener("resize", handleViewportResize);
+      window.visualViewport.addEventListener("scroll", handleViewportResize);
+    }
+
+    // Fallback for browsers without Visual Viewport API
+    window.addEventListener("resize", handleViewportResize);
+    
+    // Listen to input focus/blur
+    const inputElement = inputRef.current;
+    if (inputElement) {
+      inputElement.addEventListener("focus", handleFocus);
+      inputElement.addEventListener("blur", handleBlur);
+    }
+
+    return () => {
+      clearTimeout(timeoutId);
+      if (window.visualViewport) {
+        window.visualViewport.removeEventListener("resize", handleViewportResize);
+        window.visualViewport.removeEventListener("scroll", handleViewportResize);
+      }
+      window.removeEventListener("resize", handleViewportResize);
+      if (inputElement) {
+        inputElement.removeEventListener("focus", handleFocus);
+        inputElement.removeEventListener("blur", handleBlur);
+      }
+      setKeyboardHeight(0);
+    };
+  }, [isFullScreen, isOpen]);
+
+  // Prevent body scroll on mobile when chat is open
+  useEffect(() => {
+    if (isOpen && isFullScreen) {
+      document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.width = "100%";
+      // Store scroll position to restore later
+      const scrollY = window.scrollY;
+      document.body.style.top = `-${scrollY}px`;
+    } else {
+      const scrollY = document.body.style.top;
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
+      document.body.style.top = "";
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || "0") * -1);
+      }
+    }
+    return () => {
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
+      document.body.style.top = "";
+    };
+  }, [isOpen, isFullScreen]);
 
   return (
     <>
@@ -128,7 +263,13 @@ export function OrviaChat() {
         />
         {!isOpen && showTooltip ? <span className="orvia-launcher-tooltip">Hi, I&#39;m Orvia. Need help?</span> : null}
       </button>
-      <div className={panelClassName} id="orvia-chat-panel" role="dialog" aria-label="Orvia live chat">
+      <div 
+        ref={panelRef}
+        className={panelClassName} 
+        id="orvia-chat-panel" 
+        role="dialog" 
+        aria-label="Orvia live chat"
+      >
         <div className="orvia-chat-header">
           <div className="orvia-avatar">
             <Lottie animationData={orviaAnimation} loop autoplay aria-hidden="true" />
@@ -174,8 +315,12 @@ export function OrviaChat() {
             value={input}
             onChange={(event) => setInput(event.target.value)}
             aria-label="Your message"
+            autoComplete="off"
+            autoCorrect="on"
+            autoCapitalize="sentences"
+            enterKeyHint="send"
           />
-          <button type="submit" disabled={isLoading} className={isLoading ? "sending" : ""}>
+          <button type="submit" disabled={isLoading || !input.trim()} className={isLoading ? "sending" : ""}>
             {isLoading ? "…" : "Send"}
           </button>
         </form>
