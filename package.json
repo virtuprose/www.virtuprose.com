@@ -6,7 +6,7 @@
     "dev": "next dev",
     "clean": "rm -rf .next && rm -rf out",
     "build": "npm run clean && next build",
-    "start": "next start",
+    "start": "next start -p ${PORT:-3000}",
     "lint": "eslint"
   },
   "dependencies": {
