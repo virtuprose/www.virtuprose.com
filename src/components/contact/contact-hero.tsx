@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { OrviaOpenChatButton } from "@/components/orvia-open-chat-button";
 
@@ -32,9 +33,19 @@ export function ContactHero() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
-        className="text-3xl font-semibold md:text-4xl lg:text-5xl mb-8 text-[var(--text-heading)]"
+        className="text-3xl font-semibold md:text-4xl lg:text-5xl mb-8 text-[var(--text-heading)] flex items-center justify-center gap-2 flex-wrap"
       >
-        Talk to Orvia or book time with the team.
+        Talk to{" "}
+        <span className="inline-flex items-center">
+          <Image
+            src="/assets/orvia-logo-black.svg"
+            alt="Orvia"
+            width={120}
+            height={32}
+            className="dark:invert h-6 md:h-7 lg:h-8 w-auto"
+          />
+        </span>{" "}
+        or book time with the team.
       </motion.h1>
 
       <motion.div

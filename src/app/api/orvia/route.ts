@@ -144,9 +144,9 @@ export async function POST(request: Request) {
     const response = await client.responses.create({
       model: "gpt-4o-mini",
       input: [
-        { role: "system", content: secureSystemPrompt },
+        { role: "system" as const, content: secureSystemPrompt },
         ...sanitizedMessages.slice(-10).map((message) => ({
-          role: message.role,
+          role: message.role as "user" | "assistant",
           content: message.content,
         })),
       ],
@@ -189,7 +189,7 @@ export async function POST(request: Request) {
           email: foundEmails?.[0],
           phone: foundPhones?.[0],
           latestMessage: lastUserMessage.content,
-          history: sanitizedMessages,
+          history: sanitizedMessages as ChatMessage[],
         }).catch((error) => console.error("[orvia-lead-email]", error));
       }
     }

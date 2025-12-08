@@ -24,7 +24,7 @@ const PROMPT_INJECTION_PATTERNS = [
   /you\s+must\s+(now|always)/i,
   /system\s*:?\s*/i,
   /assistant\s*:?\s*/i,
-  /\[INST\]|\[/INST\]/i, // LLAMA format
+  new RegExp('\\[INST\\]|\\[/INST\\]', 'i'), // LLAMA format
   /<\|im_start\|>|<\|im_end\|>/i, // ChatML format
   /#\s*SYSTEM|#\s*INSTRUCTIONS/i,
   /role\s*:?\s*(system|assistant)/i,
@@ -214,7 +214,7 @@ export function validateMessage(content: string): { valid: boolean; error?: stri
 /**
  * Sanitize message history
  */
-export function sanitizeMessageHistory(messages: Array<{ role: string; content: string }>): Array<{ role: string; content: string }> {
+export function sanitizeMessageHistory(messages: Array<{ role: string; content: string }>): Array<{ role: "user" | "assistant"; content: string }> {
   // Limit conversation history length
   const limitedMessages = messages.slice(-MAX_CONVERSATION_HISTORY);
   

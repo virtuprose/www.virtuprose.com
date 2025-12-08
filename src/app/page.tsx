@@ -435,28 +435,45 @@ export default function HomePage() {
         >
           <div className="rounded-[30px] border border-white/15 bg-white/5 p-8 shadow-[0_30px_100px_rgba(3,22,26,0.25)] backdrop-blur">
             <div className="space-y-3 text-center text-[var(--gunmetal)]">
-              <p className="text-[11px] uppercase tracking-[0.5em] text-[var(--gunmetal)]/70">Rated ★★★★★ by growth teams</p>
+              <p className="text-[11px] uppercase tracking-[0.5em] text-[var(--gunmetal)]/70">Rated ★★★★★ by teams that replaced slow replies, missed leads, and manual work with AI-driven execution.</p>
               <h3 className="text-3xl font-bold leading-tight text-[var(--gunmetal)] md:text-4xl">
-                Develop, launch, and scale, all through AI-driven execution
+                You're one conversation away from more revenue. Don't miss it.
               </h3>
             </div>
             <div className="mx-auto mt-4 w-full max-w-6xl space-y-3 px-4">
               <div className="flex flex-wrap items-center justify-center gap-2 overflow-x-auto pb-1">
-                {heroExamples.map((example) => (
-                  <button
-                    key={example}
-                    type="button"
-                    onClick={() => handleExample(example)}
-                    className="rounded-full border border-[var(--gunmetal)]/35 bg-white/30 px-[0.7rem] py-[0.35rem] sm:px-4 sm:py-2 text-[0.7rem] sm:text-sm font-semibold text-[var(--gunmetal)] backdrop-blur-sm transition hover:bg-white/50"
-                  >
-                    {example}
-                  </button>
-                ))}
+                <button
+                  type="button"
+                  onClick={() => {
+                    openOrviaChat("Automate my leads with Orvia");
+                  }}
+                  className="rounded-full border border-[var(--gunmetal)]/35 bg-white/30 px-[0.7rem] py-[0.35rem] sm:px-4 sm:py-2 text-[0.7rem] sm:text-sm font-semibold text-[var(--gunmetal)] backdrop-blur-sm transition hover:bg-white/50"
+                >
+                  Automate my leads with Orvia
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    openOrviaChat("Book meetings and calls automatically");
+                  }}
+                  className="rounded-full border border-[var(--gunmetal)]/35 bg-white/30 px-[0.7rem] py-[0.35rem] sm:px-4 sm:py-2 text-[0.7rem] sm:text-sm font-semibold text-[var(--gunmetal)] backdrop-blur-sm transition hover:bg-white/50"
+                >
+                  Book meetings and calls automatically
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    openOrviaChat("Turn conversations into sales 24/7");
+                  }}
+                  className="rounded-full border border-[var(--gunmetal)]/35 bg-white/30 px-[0.7rem] py-[0.35rem] sm:px-4 sm:py-2 text-[0.7rem] sm:text-sm font-semibold text-[var(--gunmetal)] backdrop-blur-sm transition hover:bg-white/50"
+                >
+                  Turn conversations into sales 24/7
+                </button>
               </div>
               <div className="vp-hero-card mx-auto flex w-full max-w-full sm:max-w-5xl items-center gap-3 border border-white/15 px-3 py-3 sm:px-4 sm:py-4 md:px-6">
                 <textarea
                   className="flex-1 resize-none rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-base text-white placeholder:text-white/65 outline-none backdrop-blur-sm"
-                  placeholder="Describe what you want us to build or grow…"
+                  placeholder="Tell Orvia what you want it to automate…"
                   value={heroInput}
                   onChange={(event) => setHeroInput(event.target.value)}
                   onKeyDown={(event) => {
@@ -489,8 +506,8 @@ export default function HomePage() {
                 </button>
               </div>
             </div>
-            <p className="mt-6 text-center text-xs text-[var(--gunmetal)]/70">
-              This opens a conversation with Orvia, your AI partner to build and grow. No signup.
+            <p className="mt-6 text-center text-xs text-black">
+              This opens a conversation with Orvia, your AI agent that runs customer operations for you. Free website included.
             </p>
           </div>
         </section>
