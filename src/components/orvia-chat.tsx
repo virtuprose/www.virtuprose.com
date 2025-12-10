@@ -15,36 +15,32 @@ type ChatMessage = {
 
 // Helper function to decode HTML entities
 function decodeHTMLEntities(text: string): string {
-  const entities: Record<string, string> = {
-    '&amp;': '&',
-    '&lt;': '<',
-    '&gt;': '>',
-    '&quot;': '"',
-    '&#39;': "'",
-    '&#x27;': "'",
-    '&#x2F;': '/',
-    '&#x60;': '`',
-    '&#x3D;': '=',
-    '&nbsp;': ' ',
-    '&ndash;': '–',
-    '&mdash;': '—',
-    '&lsquo;': ''',
-    '&rsquo;': ''',
-    '&ldquo;': '"',
-    '&rdquo;': '"',
-    '&bull;': '•',
-    '&hellip;': '…',
-  };
-  
-  // Replace named and numeric entities
+  // Handle numeric entities first (&#123; or &#x7B;)
   let decoded = text;
-  for (const [entity, char] of Object.entries(entities)) {
-    decoded = decoded.split(entity).join(char);
-  }
-  
-  // Handle numeric entities (&#123; or &#x7B;)
   decoded = decoded.replace(/&#(\d+);/g, (_, num) => String.fromCharCode(parseInt(num, 10)));
   decoded = decoded.replace(/&#x([0-9A-Fa-f]+);/g, (_, hex) => String.fromCharCode(parseInt(hex, 16)));
+  
+  // Handle common named entities
+  const entities: [string, string][] = [
+    ['&amp;', '&'],
+    ['&lt;', '<'],
+    ['&gt;', '>'],
+    ['&quot;', '"'],
+    ['&apos;', "'"],
+    ['&nbsp;', ' '],
+    ['&ndash;', '\u2013'],
+    ['&mdash;', '\u2014'],
+    ['&lsquo;', '\u2018'],
+    ['&rsquo;', '\u2019'],
+    ['&ldquo;', '\u201C'],
+    ['&rdquo;', '\u201D'],
+    ['&bull;', '\u2022'],
+    ['&hellip;', '\u2026'],
+  ];
+  
+  for (const [entity, char] of entities) {
+    decoded = decoded.split(entity).join(char);
+  }
   
   return decoded;
 }
