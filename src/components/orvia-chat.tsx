@@ -13,6 +13,132 @@ type ChatMessage = {
   content: string;
 };
 
+// Helper function to parse and render markdown-like formatting
+function formatMessage(content: string): React.ReactNode {
+  // Split content into lines for processing
+  const lines = content.split('\n');
+  const elements: React.ReactNode[] = [];
+  let currentList: { type: 'ul' | 'ol'; items: React.ReactNode[] } | null = null;
+  let listCounter = 0;
+
+  const formatInlineText = (text: string): React.ReactNode => {
+    // Process inline formatting: bold, italic, code
+    const parts: React.ReactNode[] = [];
+    let remaining = text;
+    let keyIndex = 0;
+
+    while (remaining.length > 0) {
+      // Bold: **text** or __text__
+      const boldMatch = remaining.match(/\*\*(.+?)\*\*|__(.+?)__/);
+      if (boldMatch && boldMatch.index !== undefined) {
+        if (boldMatch.index > 0) {
+          parts.push(remaining.slice(0, boldMatch.index));
+        }
+        parts.push(
+          <strong key={`bold-${keyIndex++}`} className="font-semibold">
+            {boldMatch[1] || boldMatch[2]}
+          </strong>
+        );
+        remaining = remaining.slice(boldMatch.index + boldMatch[0].length);
+        continue;
+      }
+
+      // Italic: *text* or _text_
+      const italicMatch = remaining.match(/\*([^*]+)\*|_([^_]+)_/);
+      if (italicMatch && italicMatch.index !== undefined) {
+        if (italicMatch.index > 0) {
+          parts.push(remaining.slice(0, italicMatch.index));
+        }
+        parts.push(
+          <em key={`italic-${keyIndex++}`} className="italic">
+            {italicMatch[1] || italicMatch[2]}
+          </em>
+        );
+        remaining = remaining.slice(italicMatch.index + italicMatch[0].length);
+        continue;
+      }
+
+      // No more matches, add the rest
+      parts.push(remaining);
+      break;
+    }
+
+    return parts.length === 1 ? parts[0] : <>{parts}</>;
+  };
+
+  const flushList = () => {
+    if (currentList) {
+      if (currentList.type === 'ul') {
+        elements.push(
+          <ul key={`list-${elements.length}`} className="orvia-format-list">
+            {currentList.items.map((item, i) => (
+              <li key={i} className="orvia-format-list-item">{item}</li>
+            ))}
+          </ul>
+        );
+      } else {
+        elements.push(
+          <ol key={`list-${elements.length}`} className="orvia-format-list orvia-format-list-numbered">
+            {currentList.items.map((item, i) => (
+              <li key={i} className="orvia-format-list-item">{item}</li>
+            ))}
+          </ol>
+        );
+      }
+      currentList = null;
+      listCounter = 0;
+    }
+  };
+
+  lines.forEach((line, lineIndex) => {
+    const trimmedLine = line.trim();
+
+    // Empty line
+    if (trimmedLine === '') {
+      flushList();
+      if (elements.length > 0) {
+        elements.push(<div key={`space-${lineIndex}`} className="h-2" />);
+      }
+      return;
+    }
+
+    // Numbered list: 1. item or 1) item
+    const numberedMatch = trimmedLine.match(/^(\d+)[.)]\s+(.+)$/);
+    if (numberedMatch) {
+      if (!currentList || currentList.type !== 'ol') {
+        flushList();
+        currentList = { type: 'ol', items: [] };
+      }
+      currentList.items.push(formatInlineText(numberedMatch[2]));
+      return;
+    }
+
+    // Bullet list: - item or * item or • item
+    const bulletMatch = trimmedLine.match(/^[-*•]\s+(.+)$/);
+    if (bulletMatch) {
+      if (!currentList || currentList.type !== 'ul') {
+        flushList();
+        currentList = { type: 'ul', items: [] };
+      }
+      currentList.items.push(formatInlineText(bulletMatch[1]));
+      return;
+    }
+
+    // Regular text - flush any pending list first
+    flushList();
+    elements.push(
+      <p key={`p-${lineIndex}`} className="orvia-format-paragraph">
+        {formatInlineText(trimmedLine)}
+      </p>
+    );
+  });
+
+  // Flush any remaining list
+  flushList();
+
+  return <div className="orvia-formatted-content">{elements}</div>;
+}
+
 const welcomeMessage =
   "Hey! I'm ORVIA, your AI business assistant. Need help with bookings, leads, or scaling your operations? Let's talk.";
 
@@ -485,8 +611,8 @@ export function OrviaChat() {
             <div key={`${message.role}-${index}-${message.content}`} className="orvia-message-wrapper">
               {message.role === "assistant" ? (
                 <div className="orvia-message-assistant">
-                  <div className="orvia-message-bubble">{message.content}</div>
-                  <div className="orvia-message-meta">Orvia • AI Agent • Just now</div>
+                  <div className="orvia-message-bubble">{formatMessage(message.content)}</div>
+                  <div className="orvia-message-meta">ORVIA • AI Agent • Just now</div>
                 </div>
               ) : (
                 <div className="orvia-message-user">
