@@ -2330,53 +2330,6 @@ section {
   line-height: 1.5;
 }
 
-/* Formatted message content */
-.orvia-formatted-content {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.orvia-format-paragraph {
-  margin: 0;
-  line-height: 1.6;
-}
-
-.orvia-format-list {
-  margin: 0.5rem 0;
-  padding-left: 1.25rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-}
-
-.orvia-format-list-numbered {
-  list-style-type: decimal;
-}
-
-.orvia-format-list:not(.orvia-format-list-numbered) {
-  list-style-type: disc;
-}
-
-.orvia-format-list-item {
-  line-height: 1.5;
-  padding-left: 0.25rem;
-}
-
-.orvia-format-list-item::marker {
-  color: rgba(39, 231, 236, 0.8);
-}
-
-.orvia-formatted-content strong {
-  font-weight: 600;
-  color: #fff;
-}
-
-.orvia-formatted-content em {
-  font-style: italic;
-  opacity: 0.9;
-}
-
 .orvia-message-meta {
   color: rgba(255, 255, 255, 0.5);
   font-size: 0.7rem;
