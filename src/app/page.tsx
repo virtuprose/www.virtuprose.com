@@ -2,14 +2,14 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { servicesData } from "@/data/services";
-import { Bot, BotMessageSquare, Briefcase, Calendar, Clock, CreditCard, Globe2, Inbox, LineChart, MessageCircle, MessageSquare, RefreshCcw, ShieldCheck, Store, TrendingUp, Workflow, Zap } from "lucide-react";
+import { Bot, BotMessageSquare, Briefcase, Globe2, Inbox, LineChart, MessageCircle, RefreshCcw, TrendingUp } from "lucide-react";
 import { SentientGlobe } from "@/components/sentient-globe";
 import { OutcomeWall } from "@/components/outcome-wall";
 import { motion } from "framer-motion";
@@ -63,61 +63,12 @@ const showcaseProjects = [
   },
 ];
 
-const heroExamples = [
-  "Design a website for my business",
-  "Implement Orvia AI Agent to my business",
-  "Automate bookings and sales 24/7 with Orvia",
-];
-
-const orviaHomeHighlights = [
-  {
-    title: "Instant replies for every customer",
-    description: "People get answers in seconds instead of being left waiting.",
-    icon: MessageSquare,
-  },
-  {
-    title: "Your calendar fills itself",
-    description: "Availability shared, appointments confirmed, no-shows reduced.",
-    icon: Calendar,
-  },
-  {
-    title: "Payments collected faster",
-    description: "Secure payment links sent automatically so deals close quicker.",
-    icon: CreditCard,
-  },
-  {
-    title: "Support that never switches off",
-    description: "Routine questions, triage, and routing handled without draining your team.",
-    icon: ShieldCheck,
-  },
-  {
-    title: "Every conversation captured and organized",
-    description: "All customer details and actions synced into your system with zero manual work.",
-    icon: Workflow,
-  },
-  {
-    title: "Convert more leads without touching a single chat",
-    description: "Orvia runs the conversations that normally eat up your team's time.",
-    icon: Zap,
-  },
-  {
-    title: "Your revenue grows even while you sleep",
-    description: "Sales, bookings, and customer handling continue around the clock.",
-    icon: Clock,
-  },
-  {
-    title: "Works for any industry",
-    description: "Clinics, agencies, beauty, real estate, services, retail — Orvia adapts instantly.",
-    icon: Store,
-  },
-];
-
 export default function HomePage() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const cursorDotRef = useRef<HTMLDivElement | null>(null);
   const cursorRingRef = useRef<HTMLDivElement | null>(null);
   const lenisRef = useRef<Lenis | null>(null);
-  const [heroInput, setHeroInput] = useState("");
+
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.2,
@@ -180,36 +131,7 @@ export default function HomePage() {
     };
   }, []);
 
-  const openOrviaChat = (detail?: string) => {
-    if (typeof window === "undefined") return;
-    window.dispatchEvent(new CustomEvent("open-orvia-chat", { detail }));
-  };
 
-  const handleHeroSubmit = () => {
-    const text = heroInput.trim();
-    if (!text) return;
-    openOrviaChat(text);
-    setHeroInput("");
-  };
-
-  const handleExample = (example: string) => {
-    setHeroInput(example);
-    openOrviaChat(example);
-  };
-
-  const scrollToLaunchLab = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    const element = document.getElementById("launch-lab");
-    if (element && lenisRef.current) {
-      const rect = element.getBoundingClientRect();
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      const targetPosition = rect.top + scrollTop - 96; // 96px offset (6rem)
-      lenisRef.current.scrollTo(targetPosition, {
-        duration: 1.2,
-        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      });
-    }
-  };
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -426,7 +348,7 @@ export default function HomePage() {
 
               <div data-hero-animate className="flex flex-wrap gap-3">
                 <Button asChild size="lg" className="rounded-full px-6">
-                  <Link href="#launch-lab" onClick={scrollToLaunchLab}>View Demo</Link>
+                  <Link href="/orvia">View Demo</Link>
                 </Button>
                 <Button asChild size="lg" variant="outline" className="rounded-full px-6 border-[var(--border)]/60 hover:bg-[var(--bg-secondary)]">
                   <Link href="/orvia">Learn More</Link>
@@ -436,91 +358,6 @@ export default function HomePage() {
 
             {/* Outcome Wall */}
             <OutcomeWall />
-          </div>
-        </section>
-
-        <section
-          id="launch-lab"
-          data-section
-          className="container space-y-6 p-1 vp-hero scroll-mt-24"
-          style={{ scrollMarginTop: '6rem' }}
-        >
-          <div className="rounded-[30px] border border-white/15 bg-white/5 p-8 shadow-[0_30px_100px_rgba(3,22,26,0.25)] backdrop-blur">
-            <div className="space-y-3 text-center text-[var(--gunmetal)]">
-              <p className="text-[11px] uppercase tracking-[0.5em] text-[var(--gunmetal)]/70">Rated ★★★★★ by Growth Teams</p>
-              <h3 className="text-3xl font-bold leading-tight text-[var(--gunmetal)] md:text-4xl">
-                You're one conversation away from more revenue. Don't miss it.
-              </h3>
-            </div>
-            <div className="mx-auto mt-4 w-full max-w-6xl space-y-3 px-4">
-              <div className="flex flex-wrap items-center justify-center gap-2 overflow-x-auto pb-1">
-                <button
-                  type="button"
-                  onClick={() => {
-                    openOrviaChat("Automate my leads with Orvia");
-                  }}
-                  className="rounded-full border border-[var(--gunmetal)]/35 bg-white/30 px-[0.7rem] py-[0.35rem] sm:px-4 sm:py-2 text-[0.7rem] sm:text-sm font-semibold text-[var(--gunmetal)] backdrop-blur-sm transition hover:bg-white/50"
-                >
-                  Automate my leads with Orvia
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    openOrviaChat("Book meetings and calls automatically");
-                  }}
-                  className="rounded-full border border-[var(--gunmetal)]/35 bg-white/30 px-[0.7rem] py-[0.35rem] sm:px-4 sm:py-2 text-[0.7rem] sm:text-sm font-semibold text-[var(--gunmetal)] backdrop-blur-sm transition hover:bg-white/50"
-                >
-                  Book meetings and calls automatically
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    openOrviaChat("Turn conversations into sales 24/7");
-                  }}
-                  className="rounded-full border border-[var(--gunmetal)]/35 bg-white/30 px-[0.7rem] py-[0.35rem] sm:px-4 sm:py-2 text-[0.7rem] sm:text-sm font-semibold text-[var(--gunmetal)] backdrop-blur-sm transition hover:bg-white/50"
-                >
-                  Turn conversations into sales 24/7
-                </button>
-              </div>
-              <div className="vp-hero-card mx-auto flex w-full max-w-full sm:max-w-5xl items-center gap-3 border border-white/15 px-3 py-3 sm:px-4 sm:py-4 md:px-6">
-                <textarea
-                  className="flex-1 resize-none rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-base text-white placeholder:text-white/65 outline-none backdrop-blur-sm"
-                  placeholder="Tell Orvia what you want it to automate…"
-                  value={heroInput}
-                  onChange={(event) => setHeroInput(event.target.value)}
-                  onKeyDown={(event) => {
-                    if (event.key === "Enter" && !event.shiftKey) {
-                      event.preventDefault();
-                      handleHeroSubmit();
-                    }
-                  }}
-                  rows={3}
-                />
-                <button
-                  type="button"
-                  aria-label="Submit"
-                  onClick={handleHeroSubmit}
-                  className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--rich-black)] text-white shadow-[0_10px_25px_#27e7ec59] transition hover:-translate-y-0.5"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="h-5 w-5"
-                  >
-                    <line x1="12" y1="19" x2="12" y2="5" />
-                    <polyline points="5 12 12 5 19 12" />
-                  </svg>
-                </button>
-              </div>
-            </div>
-            <p className="mt-6 text-center text-xs text-black">
-              This opens a conversation with Orvia, your AI agent that runs customer operations for you. Free website included.
-            </p>
           </div>
         </section>
 
