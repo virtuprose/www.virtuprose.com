@@ -13,10 +13,49 @@ type ChatMessage = {
   content: string;
 };
 
+// Helper function to decode HTML entities
+function decodeHTMLEntities(text: string): string {
+  const entities: Record<string, string> = {
+    '&amp;': '&',
+    '&lt;': '<',
+    '&gt;': '>',
+    '&quot;': '"',
+    '&#39;': "'",
+    '&#x27;': "'",
+    '&#x2F;': '/',
+    '&#x60;': '`',
+    '&#x3D;': '=',
+    '&nbsp;': ' ',
+    '&ndash;': '–',
+    '&mdash;': '—',
+    '&lsquo;': ''',
+    '&rsquo;': ''',
+    '&ldquo;': '"',
+    '&rdquo;': '"',
+    '&bull;': '•',
+    '&hellip;': '…',
+  };
+  
+  // Replace named and numeric entities
+  let decoded = text;
+  for (const [entity, char] of Object.entries(entities)) {
+    decoded = decoded.split(entity).join(char);
+  }
+  
+  // Handle numeric entities (&#123; or &#x7B;)
+  decoded = decoded.replace(/&#(\d+);/g, (_, num) => String.fromCharCode(parseInt(num, 10)));
+  decoded = decoded.replace(/&#x([0-9A-Fa-f]+);/g, (_, hex) => String.fromCharCode(parseInt(hex, 16)));
+  
+  return decoded;
+}
+
 // Helper function to parse and render markdown-like formatting
 function formatMessage(content: string): React.ReactNode {
+  // Decode HTML entities first
+  const decodedContent = decodeHTMLEntities(content);
+  
   // Split content into lines for processing
-  const lines = content.split('\n');
+  const lines = decodedContent.split('\n');
   const elements: React.ReactNode[] = [];
   let currentList: { type: 'ul' | 'ol'; items: React.ReactNode[] } | null = null;
   let listCounter = 0;
