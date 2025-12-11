@@ -410,101 +410,175 @@
 }
 
 /* ========================================
-   LAUNCHER BUTTON - Glassmorphism Style
-   Option D: Frosted Glass with Cyan Border
+   LAUNCHER BUTTON - New Floating Design
+   Source: src/docs/floating_button_design.md (Option 2)
    ======================================== */
 
-.orvia-launcher {
+/* Container Positioning */
+.orvia-float-btn-container {
     position: fixed;
     bottom: 1.5rem;
     right: 1.5rem;
     z-index: 9998;
+}
 
-    /* Frosted glass with blue-cyan gradient tint */
-    background: linear-gradient(135deg,
-            rgba(180, 230, 240, 0.6) 0%,
-            rgba(120, 200, 220, 0.55) 30%,
-            rgba(80, 170, 200, 0.5) 70%,
-            rgba(100, 190, 210, 0.55) 100%);
-    backdrop-filter: blur(24px) saturate(1.4);
-    -webkit-backdrop-filter: blur(24px) saturate(1.4);
-
-    /* Solid cyan border */
-    border: 2px solid #27e7ec;
-
-    /* Outer glow and shadow */
-    box-shadow:
-        0 0 40px rgba(39, 231, 236, 0.25),
-        0 8px 32px rgba(0, 0, 0, 0.12);
-
+/* Button Reset & Layout */
+.orvia-float-btn {
+    position: relative;
+    width: 3.5rem;
+    height: 3.5rem;
     border-radius: 9999px;
-    padding: 16px 28px;
+    background: transparent;
+    border: none;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 14px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    font-family: inherit;
+    justify-content: center;
+    transition: transform 0.3s;
+    padding: 0;
 }
 
-.orvia-launcher:hover {
-    transform: translateY(-2px) scale(1.02);
-    border-color: #27e7ec;
+.orvia-float-btn:active {
+    transform: scale(0.95);
+}
+
+/* 1. Outer Glow */
+.orvia-btn-glow {
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    background-color: rgba(6, 182, 212, 0.4);
+    /* Cyan glow */
+    filter: blur(20px);
+    transition: all 0.5s;
+    opacity: 0.6;
+}
+
+:root.dark .orvia-btn-glow,
+.dark .orvia-btn-glow {
+    background-color: rgba(34, 211, 238, 0.3);
+    /* Lighter cyan for dark mode */
+    filter: blur(24px);
+    opacity: 1;
+}
+
+.orvia-float-btn:hover .orvia-btn-glow {
+    background-color: rgba(6, 182, 212, 0.6);
+    filter: blur(32px);
+    opacity: 0.8;
+}
+
+:root.dark .orvia-float-btn:hover .orvia-btn-glow,
+.dark .orvia-float-btn:hover .orvia-btn-glow {
+    background-color: rgba(34, 211, 238, 0.5);
+    filter: blur(40px);
+    opacity: 1;
+}
+
+/* 2. Glass Background */
+.orvia-btn-glass {
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    /* Light Mode: White-ish glass */
+    background-color: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: background-color 0.3s;
     box-shadow:
-        0 0 50px rgba(39, 231, 236, 0.35),
-        0 12px 40px rgba(0, 0, 0, 0.15);
+        0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -1px rgba(0, 0, 0, 0.06),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.5);
 }
 
-.orvia-launcher:active {
-    transform: translateY(0) scale(0.98);
+/* Dark Mode: Dark glass */
+:root.dark .orvia-btn-glass,
+.dark .orvia-btn-glass {
+    background-color: rgba(15, 23, 42, 0.4);
+    box-shadow: none;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Mobile - Compact but still visible */
+.orvia-float-btn:hover .orvia-btn-glass {
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+:root.dark .orvia-float-btn:hover .orvia-btn-glass,
+.dark .orvia-float-btn:hover .orvia-btn-glass {
+    background-color: rgba(15, 23, 42, 0.6);
+}
+
+/* 3. Gradient Border */
+.orvia-btn-border {
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    background: linear-gradient(to right, #67e8f9, #22d3ee, #3b82f6);
+    box-shadow: 0 0 15px rgba(6, 182, 212, 0.3);
+    opacity: 0.8;
+    padding: 2px;
+    /* Masking to create the hollow border effect */
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+
+.orvia-float-btn:hover .orvia-btn-border {
+    opacity: 1;
+}
+
+/* 4. Inner Highlight */
+.orvia-btn-highlight {
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    background: linear-gradient(to top right, rgba(255, 255, 255, 0.4), transparent);
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+:root.dark .orvia-btn-highlight,
+.dark .orvia-btn-highlight {
+    background: linear-gradient(to top right, rgba(255, 255, 255, 0.15), transparent);
+    opacity: 0.3;
+}
+
+/* Icon / Logo wrapper */
+.orvia-btn-icon-wrapper {
+    position: relative;
+    z-index: 10;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.orvia-btn-icon {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+/* Mobile Adjustments */
 @media (max-width: 640px) {
-    .orvia-launcher {
-        bottom: 1rem;
-        right: 1rem;
-        padding: 12px 20px;
-        gap: 10px;
+    .orvia-float-btn-container {
+        bottom: 1.25rem;
+        right: 1.25rem;
     }
 }
 
-/* Chat icon - white outline style */
-.orvia-launcher-icon {
-    width: 26px;
-    height: 26px;
-    color: rgba(255, 255, 255, 0.95);
-    flex-shrink: 0;
-    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
-}
-
-@media (max-width: 640px) {
-    .orvia-launcher-icon {
-        width: 22px;
-        height: 22px;
-    }
-}
-
-/* Text - white with subtle shadow */
-.orvia-launcher-text {
-    color: rgba(255, 255, 255, 0.95);
-    font-size: 1.1rem;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
-}
-
-@media (max-width: 640px) {
-    .orvia-launcher-text {
-        font-size: 0.95rem;
-    }
-}
-
-/* Hide unused elements */
+/* Hide unused elements from previous designs */
+.orvia-launcher-text,
+.orvia-launcher-icon,
+.orvia-launcher,
 .orvia-launcher-tooltip,
 .orvia-launcher-lottie,
 .orvia-launcher-logo,
-.orvia-launcher-icon-wrapper,
 .orvia-launcher-online {
     display: none;
 }

@@ -42,7 +42,7 @@ You handle requirements collection for:
 
 PRICING STRUCTURE
 ORVIA AI AGENT PACKAGES (Only packages you quote pricing for)
-Starter Plan - $300/month
+Starter Plan - $299/month
 - 200 conversations/month
 - Free website included
 - Web-based AI agent

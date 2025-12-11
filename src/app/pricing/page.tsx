@@ -45,10 +45,10 @@ type FormState = {
 const plans: Plan[] = [
   {
     title: "Starter",
-    price: "$300/month",
+    price: "$299/month",
     subtitle: "Free site + 24/7 web AI agent",
     icon: Sparkles,
-    cta: { label: "Get Started", href: "https://rzp.io/rzp/b2uLy2tC" },
+    cta: { label: "Get Started", href: "/contact" },
     features: ["Your branded website built for conversions", "Booking and scheduling system", "200 conversations every month", "Web AI Agent that responds instantly", "Complete setup done for you"],
   },
   {
@@ -58,7 +58,7 @@ const plans: Plan[] = [
     badge: "Most Popular",
     highlight: true,
     icon: LineChart,
-    cta: { label: "Get Started", href: "https://rzp.io/rzp/LNubLwT" },
+    cta: { label: "Get Started", href: "/contact" },
     features: ["High-performance website crafted to convert more leads", "Smart booking engine that runs your calendar automatically", "500 conversations every month", "Web AI Agent for nonstop customer handling", "Full setup and optimization"],
   },
   {
@@ -128,18 +128,18 @@ export default function PricingPage() {
 
   const updateField =
     (field: keyof FormState) =>
-    (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-      setForm((prev) => ({ ...prev, [field]: e.target.value }));
-    };
+      (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+        setForm((prev) => ({ ...prev, [field]: e.target.value }));
+      };
 
-const validateStep = (current: number) => {
-  if (current === 0) return form.services.length > 0;
-  if (current === 1)
-    return Boolean(form.fullName && form.email && form.company && form.projectTitle && form.projectDescription.trim().length >= 10);
-  if (current === 2) return Boolean(form.startTimeline && form.budget);
-  if (current === 3) return Boolean(form.brandAssets && form.techDocs && form.comments.trim().length >= 10);
-  return true;
-};
+  const validateStep = (current: number) => {
+    if (current === 0) return form.services.length > 0;
+    if (current === 1)
+      return Boolean(form.fullName && form.email && form.company && form.projectTitle && form.projectDescription.trim().length >= 10);
+    if (current === 2) return Boolean(form.startTimeline && form.budget);
+    if (current === 3) return Boolean(form.brandAssets && form.techDocs && form.comments.trim().length >= 10);
+    return true;
+  };
 
   const next = () => {
     if (!validateStep(step)) {
@@ -280,9 +280,8 @@ function PricingGrid() {
 function PricingCard({ plan }: { plan: Plan }) {
   return (
     <Card
-      className={`relative overflow-hidden border border-white/60 bg-white/40 shadow-[0_25px_90px_rgba(15,23,42,0.12)] backdrop-blur transition duration-300 hover:-translate-y-1 hover:shadow-[0_35px_120px_rgba(15,23,42,0.16)] dark:border-[var(--border)]/70 dark:bg-[var(--bg-secondary)]/70 ${
-        plan.highlight ? "ring-2 ring-[var(--accent)]/70" : ""
-      }`}
+      className={`relative overflow-hidden border border-white/60 bg-white/40 shadow-[0_25px_90px_rgba(15,23,42,0.12)] backdrop-blur transition duration-300 hover:-translate-y-1 hover:shadow-[0_35px_120px_rgba(15,23,42,0.16)] dark:border-[var(--border)]/70 dark:bg-[var(--bg-secondary)]/70 ${plan.highlight ? "ring-2 ring-[var(--accent)]/70" : ""
+        }`}
       data-interactive
     >
       <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-white/10 to-white/0 dark:from-white/5" />
@@ -347,19 +346,17 @@ function Stepper({ steps, activeStep }: { steps: { title: string; description: s
         return (
           <div
             key={item.title}
-            className={`rounded-2xl border px-4 py-3 transition text-[var(--text-primary)] ${
-              isActive
+            className={`rounded-2xl border px-4 py-3 transition text-[var(--text-primary)] ${isActive
                 ? "border-[var(--accent)]/70 bg-[var(--accent)]/12"
                 : "border-[var(--border)]/70 bg-[var(--bg-secondary)]/80"
-            }`}
+              }`}
           >
             <div className="flex items-center gap-2 text-sm font-semibold">
               <span
-                className={`flex h-8 w-8 items-center justify-center rounded-full border ${
-                  isActive || isComplete
+                className={`flex h-8 w-8 items-center justify-center rounded-full border ${isActive || isComplete
                     ? "border-[var(--accent)] bg-[var(--accent)]/15 text-[var(--accent)]"
                     : "border-[var(--border)]/70 text-[var(--text-secondary)]"
-                }`}
+                  }`}
               >
                 {isComplete ? <Check className="h-4 w-4" /> : index + 1}
               </span>
@@ -396,11 +393,10 @@ function StepServices({
               key={service}
               type="button"
               onClick={() => onToggle(service)}
-              className={`rounded-full px-4 py-2 text-sm font-medium transition ${
-                active
+              className={`rounded-full px-4 py-2 text-sm font-medium transition ${active
                   ? "border-[3px] border-[var(--accent)] bg-[var(--accent)]/12 text-[var(--accent)] shadow-[0_10px_30px_rgba(92,99,255,0.28)]"
                   : "border border-[var(--border)]/80 bg-[var(--bg-secondary)]/80 text-[var(--text-primary)] hover:border-[var(--accent)]/60 hover:text-[var(--accent)]"
-              }`}
+                }`}
             >
               {service}
             </button>
@@ -524,11 +520,10 @@ function StepAssets({
               {group.options.map((option) => (
                 <label
                   key={option}
-                  className={`flex items-center gap-2 rounded-xl border px-3 py-2 text-sm transition ${
-                    form[group.field] === option
+                  className={`flex items-center gap-2 rounded-xl border px-3 py-2 text-sm transition ${form[group.field] === option
                       ? "border-[var(--accent)] bg-[var(--accent)]/10 text-[var(--text-primary)]"
                       : "border-[var(--border)]/70 text-[var(--text-secondary)]"
-                  }`}
+                    }`}
                 >
                   <input
                     type="radio"

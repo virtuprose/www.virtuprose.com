@@ -165,10 +165,10 @@ const pricingPlans: {
 }[] = [
     {
       title: "Starter",
-      price: "$300/month",
+      price: "$299/month",
       subtitle: "Free site + 24/7 web AI agent",
       icon: Sparkles,
-      cta: { label: "Get Started", href: "https://rzp.io/rzp/b2uLy2tC" },
+      cta: { label: "Get Started", href: "/contact" },
       features: ["Your branded website built for conversions", "Booking and scheduling system", "200 conversations every month", "Web AI Agent that responds instantly", "Complete setup done for you"],
     },
     {
@@ -178,7 +178,7 @@ const pricingPlans: {
       badge: "Most Popular",
       highlight: true,
       icon: LineChart,
-      cta: { label: "Get Started", href: "https://rzp.io/rzp/LNubLwT" },
+      cta: { label: "Get Started", href: "/contact" },
       features: ["High-performance website crafted to convert more leads", "Smart booking engine that runs your calendar automatically", "500 conversations every month", "Web AI Agent for nonstop customer handling", "Full setup and optimization"],
     },
     {
