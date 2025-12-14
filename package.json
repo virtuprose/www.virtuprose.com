@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "PORT=3100 next dev --port 3100",
+    "dev": "PORT=4000 next dev --port 4000",
     "clean": "rm -rf .next && rm -rf out",
     "build": "npm run clean && next build",
     "start": "next start -p $PORT",

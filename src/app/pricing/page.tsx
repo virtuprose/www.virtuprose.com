@@ -71,6 +71,8 @@ type Plan = {
   cta: { label: string; href: string };
   includesFrom?: string;
   features: Feature[];
+  controlCenterFeatures: string[];
+  controlCenterMicroline: string;
 };
 
 const plans: Plan[] = [
@@ -90,6 +92,12 @@ const plans: Plan[] = [
       { text: "Spam filtering", tooltip: "Keeps lead lists clean." },
       { text: "Done-for-you setup", tooltip: "Go live without touching any tech." },
     ],
+    controlCenterFeatures: [
+      "View and manage all leads and conversations",
+      "Manage bookings, schedules, and reminders",
+      "See basic performance insights",
+    ],
+    controlCenterMicroline: "Designed for daily lead flow and simple visibility.",
   },
   {
     title: "Growth",
@@ -110,6 +118,13 @@ const plans: Plan[] = [
       { text: "Smart routing", tooltip: "Sends leads to right services/staff." },
       { text: "Ongoing optimization", tooltip: "Monthly tuning for performance." },
     ],
+    controlCenterFeatures: [
+      "Everything in Starter",
+      "Advanced performance insights and trends",
+      "Lead quality and booking outcome visibility",
+      "Smarter routing and optimization controls",
+    ],
+    controlCenterMicroline: "Built for teams focused on growth and efficiency.",
   },
   {
     title: "Custom",
@@ -128,6 +143,13 @@ const plans: Plan[] = [
       { text: "Enterprise workflows", tooltip: "Automate complex operations." },
       { text: "Dedicated success partner", tooltip: "Human support monthly." },
     ],
+    controlCenterFeatures: [
+      "Everything in Growth",
+      "Full analytics and custom reporting",
+      "Multi-location and multi-specialist visibility",
+      "Workflow-level controls and integrations",
+    ],
+    controlCenterMicroline: "For high-volume or complex operations.",
   },
 ];
 
@@ -224,6 +246,10 @@ function PricingGrid() {
         <p className="text-xs uppercase tracking-[0.55em] text-[var(--text-secondary)]">Orvia pricing</p>
         <h2 className="text-3xl font-semibold md:text-4xl">Plans built to automate your business from day one</h2>
         <p className="text-sm text-[var(--text-secondary)]">Pricing made simple. Setup done for you. Results that scale with your team.</p>
+        <p className="mt-4 text-base text-[var(--text-primary)]">
+          <span className="font-semibold">Meet the Orvia Control Center.</span>{" "}
+          <span className="text-[var(--text-secondary)]">Your private dashboard to manage leads, bookings, and performance in real time.</span>
+        </p>
       </div>
       <TooltipProvider delayDuration={100}>
         <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
@@ -232,6 +258,10 @@ function PricingGrid() {
           ))}
         </div>
       </TooltipProvider>
+      {/* Confidence Strip */}
+      <p className="text-center text-sm text-[var(--text-secondary)] pt-6">
+        Every Orvia plan includes access to the Orvia Control Center. No black boxes. You always know what's happening in your business.
+      </p>
     </section>
   );
 }
@@ -297,6 +327,22 @@ function PricingCard({ plan }: { plan: Plan }) {
             </li>
           ))}
         </ul>
+
+        {/* Orvia Control Center Access */}
+        <div className="border-t border-[var(--border)]/50 pt-4 space-y-3">
+          <p className="text-xs font-semibold uppercase tracking-wide text-[var(--accent)]">Orvia Control Center Access</p>
+          <ul className="space-y-2 text-sm text-[var(--text-secondary)]">
+            {plan.controlCenterFeatures.map((feature) => (
+              <li key={feature} className="flex items-start gap-2">
+                <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[var(--accent)]/12 text-[var(--accent)] mt-0.5">
+                  <Check className="h-2.5 w-2.5" />
+                </span>
+                <span>{feature}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="text-xs italic text-[var(--text-secondary)]/80">{plan.controlCenterMicroline}</p>
+        </div>
 
         {/* CTA Button */}
         <Button asChild className="w-full rounded-full" variant={plan.highlight ? "default" : "outline"}>
