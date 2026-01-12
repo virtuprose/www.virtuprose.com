@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Fragment, useEffect, useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import {
@@ -13,7 +13,7 @@ import {
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
-import { Menu, Sparkles } from "lucide-react";
+import { Menu } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -31,9 +31,10 @@ type NavItem = {
 
 const NAV_LINKS: NavItem[] = [
   { href: "/", label: "Home" },
-  { href: "/pricing", label: "Pricing" },
-  { href: "/who-we-are", label: "Who We Are" },
-  { href: "/contact", label: "Contact" },
+  { href: "/who-we-are", label: "About Zaid" },
+  { href: "/orvia", label: "The Orvia Method" },
+  { href: "/pricing", label: "Engagement Models" },
+  // { href: "/contact", label: "Contact" },
 ];
 
 export function SiteNav() {
@@ -78,8 +79,8 @@ export function SiteNav() {
               href={link.href}
               className={cn(
                 "rounded-xl px-4 py-3 text-[15px] font-medium transition-all duration-200",
-                pathname === link.href 
-                  ? "bg-[var(--text-primary)]/5 text-[var(--text-primary)]" 
+                pathname === link.href
+                  ? "bg-[var(--text-primary)]/5 text-[var(--text-primary)]"
                   : "text-[var(--text-secondary)] hover:bg-[var(--text-primary)]/5 hover:text-[var(--text-primary)]",
               )}
             >
@@ -88,16 +89,10 @@ export function SiteNav() {
           ))}
           <div className="my-3 h-px bg-[var(--border)]/50" />
           <Link
-            href="/orvia"
-            className="group relative flex items-center gap-3 rounded-xl bg-gradient-to-r from-[var(--accent)]/10 to-[var(--accent)]/5 px-4 py-3 transition-all duration-300 hover:from-[var(--accent)]/15 hover:to-[var(--accent)]/10"
+            href="/contact"
+            className="group relative flex items-center justify-center gap-3 rounded-xl bg-[var(--text-primary)] px-4 py-3 text-[var(--bg)] transition-all duration-300"
           >
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--accent)] text-white shadow-lg shadow-[var(--accent)]/25">
-              <Sparkles className="h-4 w-4" />
-            </span>
-            <div className="flex flex-col">
-              <span className="text-sm font-semibold text-[var(--text-primary)]">ORVIA</span>
-              <span className="text-xs text-[var(--text-secondary)]">AI Business Assistant</span>
-            </div>
+            <span className="text-sm font-semibold">Book Zaid</span>
           </Link>
         </div>
       </SheetContent>
@@ -114,8 +109,8 @@ export function SiteNav() {
                 href={link.href}
                 className={cn(
                   "relative rounded-lg px-4 py-2 text-[13px] font-medium tracking-[-0.01em] transition-all duration-200",
-                  pathname === link.href 
-                    ? "text-[var(--text-primary)]" 
+                  pathname === link.href
+                    ? "text-[var(--text-primary)]"
                     : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]",
                 )}
               >
@@ -131,17 +126,14 @@ export function SiteNav() {
         <NavigationMenuItem>
           <NavigationMenuLink asChild>
             <Link
-              href="/orvia"
+              href="/contact"
               className={cn(
-                "group relative inline-flex items-center gap-2 rounded-full px-4 py-2 text-[13px] font-semibold transition-all duration-300",
-                "bg-gradient-to-r from-[var(--accent)] to-[#14b8a6]",
-                "text-white shadow-[0_2px_12px_rgba(39,231,236,0.35)]",
-                "hover:shadow-[0_4px_20px_rgba(39,231,236,0.45)] hover:scale-[1.02]",
-                pathname === "/orvia" && "ring-2 ring-[var(--accent)]/30 ring-offset-2 ring-offset-[var(--bg)]"
+                "group relative inline-flex items-center gap-2 rounded-full px-5 py-2 text-[13px] font-semibold transition-all duration-300",
+                "bg-[var(--text-primary)] text-[var(--bg)]",
+                "hover:shadow-lg hover:scale-[1.02]",
               )}
             >
-              <Sparkles className="h-3.5 w-3.5" />
-              <span>ORVIA</span>
+              <span>Book Zaid</span>
             </Link>
           </NavigationMenuLink>
         </NavigationMenuItem>

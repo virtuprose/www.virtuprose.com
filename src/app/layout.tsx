@@ -24,9 +24,9 @@ const themeInitializer = `(() => {
 })();`;
 
 export const metadata: Metadata = {
-  title: "VirtuProse Solutions | Intelligent Growth Engines",
+  title: "Muhammad Zaid | Strategic Automation Partner",
   description:
-    "VirtuProse Solutions builds AI-powered growth engines across web, marketing, and automation.",
+    "I help ambitious brands scale with intelligent automation engines. Leveraging 10 years of experience to replace manual work with scalable systems.",
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://virtuprose.com"),
   icons: {
     icon: "/assets/favicon.png",
@@ -34,11 +34,11 @@ export const metadata: Metadata = {
     apple: "/assets/favicon.png",
   },
   openGraph: {
-    title: "VirtuProse Solutions",
+    title: "Muhammad Zaid | Strategic Automation Partner",
     description:
-      "AI-inspired growth marketing, UI/UX, web apps, and automation built to scale brands 24/7.",
+      "I help ambitious brands scale with intelligent automation engines. Leveraging 10 years of experience to replace manual work with scalable systems.",
     url: "https://virtuprose.com",
-    siteName: "VirtuProse Solutions",
+    siteName: "Muhammad Zaid",
     images: [
       {
         url: "/assets/vps-icon.svg",

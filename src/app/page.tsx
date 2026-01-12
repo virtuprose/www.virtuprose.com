@@ -15,9 +15,9 @@ import { OutcomeWall } from "@/components/outcome-wall";
 import { motion } from "framer-motion";
 
 const heroMetrics = [
-  { target: 10, label: "Years crafting digital experiences" },
-  { target: 240, label: "Projects launched and scaled globally" },
-  { target: 96, label: "Partner satisfaction built on real business outcomes" },
+  { target: 10, label: "Years experience" },
+  { target: 100, label: "Businesses automated across the GCC" },
+  { target: 10, label: "Million KD+ in revenue generated for clients" },
 ];
 
 const partnerLogosRow1 = [
@@ -303,10 +303,10 @@ export default function HomePage() {
               {/* Feature badges - Second on mobile */}
               <div className="order-2 flex flex-wrap gap-2">
                 <span className="rounded-full border border-[var(--border)]/60 bg-[var(--bg)]/60 px-3 py-1 text-[0.6rem] uppercase tracking-[0.4em] text-[var(--text-secondary)] backdrop-blur-sm whitespace-nowrap w-fit">
-                  Your first AI closer
+                  Muhammad Zaid
                 </span>
                 <span className="rounded-full border border-[var(--border)]/60 bg-[var(--bg)]/60 px-3 py-1 text-[0.6rem] uppercase tracking-[0.4em] text-[var(--text-secondary)] backdrop-blur-sm whitespace-nowrap w-fit">
-                  Booking engine included
+                  Strategic Automation
                 </span>
               </div>
             </div>
@@ -324,10 +324,10 @@ export default function HomePage() {
                     priority
                   />
                   <span className="rounded-full border border-[var(--border)]/60 bg-[var(--bg)]/60 px-3 py-1 text-xs uppercase tracking-[0.4em] text-[var(--text-secondary)] backdrop-blur-sm whitespace-nowrap">
-                    Your first AI closer
+                    Muhammad Zaid
                   </span>
                   <span className="rounded-full border border-[var(--border)]/60 bg-[var(--bg)]/60 px-3 py-1 text-xs uppercase tracking-[0.4em] text-[var(--text-secondary)] backdrop-blur-sm whitespace-nowrap">
-                    Booking engine included
+                    Strategic Automation
                   </span>
                 </div>
               </div>
@@ -340,20 +340,20 @@ export default function HomePage() {
                   data-hero-animate
                   className="text-4xl font-semibold leading-tight tracking-tight text-[var(--text-primary)] md:text-5xl lg:text-6xl mt-[3px] sm:mt-0"
                 >
-                  More bookings. More sales. No extra hires.
+                  I build the systems that <br className="hidden md:block" /> scale your business.
                 </h2>
               </div>
 
-              <p data-hero-animate className="text-[0.7875rem] leading-relaxed text-[var(--text-secondary)] sm:text-lg md:text-xl">
-                Orvia handles every conversation, books appointments, and closes sales automatically. Your business keeps growing. Even when you're offline.
+              <p data-hero-animate className="text-[0.7875rem] leading-relaxed text-[var(--text-secondary)] sm:text-lg md:text-xl max-w-2xl">
+                Leveraging 10 years of experience in the GCC market to replace manual work with scalable automation engines. I don't just advise—I implement.
               </p>
 
               <div data-hero-animate className="flex flex-wrap gap-3">
-                <Button asChild size="lg" className="rounded-full px-6">
-                  <Link href="/orvia">View Demo</Link>
+                <Button asChild size="lg" className="rounded-full px-6 bg-[var(--text-primary)] text-[var(--bg)] border-none hover:opacity-90">
+                  <Link href="/contact">Book a Consultation</Link>
                 </Button>
                 <Button asChild size="lg" variant="outline" className="rounded-full px-6 border-[var(--border)]/60 hover:bg-[var(--bg-secondary)]">
-                  <Link href="/orvia">Learn More</Link>
+                  <Link href="/who-we-are">Read My Story</Link>
                 </Button>
               </div>
             </div>
@@ -403,10 +403,10 @@ export default function HomePage() {
         <section className="py-20 bg-gradient-to-b from-transparent via-gray-50/50 to-gray-100/80 dark:from-transparent dark:to-[#041F29] overflow-hidden relative">
           <div className="max-w-6xl mx-auto px-6 text-center mb-12">
             <p className="text-sm uppercase tracking-[0.2em] text-gray-500 dark:text-gray-300">
-              Trusted by operators worldwide
+              Trusted by 100+ businesses since 2014
             </p>
             <h2 className="text-3xl font-semibold mt-3 text-gray-900 dark:text-white">
-              Partner stories across industries
+              Clients I've helped scale
             </h2>
           </div>
 
@@ -468,10 +468,10 @@ export default function HomePage() {
                 className="space-y-4"
               >
                 <h3 className="text-3xl font-semibold leading-tight text-[var(--text-primary)] md:text-4xl lg:text-5xl">
-                  What would change if every lead was handled properly?
+                  Ready to automate your operations?
                 </h3>
                 <p className="text-lg text-[var(--text-secondary)] max-w-2xl mx-auto">
-                  We'll show you exactly where Orvia removes friction and increases revenue in your business.
+                  I'll audit your current workflow and show you exactly where we can remove friction and increase revenue.
                 </p>
               </motion.div>
 
@@ -489,7 +489,7 @@ export default function HomePage() {
                   size="lg"
                   className="relative rounded-full px-8 h-12 font-semibold bg-[var(--accent)] text-white hover:bg-[var(--accent-hover)] shadow-lg shadow-[var(--accent)]/30 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-[var(--accent)]/40"
                 >
-                  <Link href="/contact">Show me Orvia in action</Link>
+                  <Link href="/contact">Book Zaid Now</Link>
                 </Button>
               </motion.div>
             </div>

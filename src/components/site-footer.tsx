@@ -3,27 +3,25 @@ import Image from "next/image";
 
 const footerColumns = [
   {
-    label: "Company",
+    label: "Explore",
     links: [
-      { href: "/who-we-are", text: "Who We Are" },
-      { href: "/contact", text: "Contact" },
+      { href: "/who-we-are", text: "About Zaid" },
+      { href: "/orvia", text: "The Orvia Method" },
+      { href: "/pricing", text: "Engagement Models" },
     ],
   },
   {
-    label: "Solutions",
+    label: "Connect",
     links: [
-      // { href: "/services", text: "Services" }, // Hidden for now
-      { href: "/pricing", text: "Pricing" },
-      { href: "/orvia", text: "Orvia AI + Voice" },
+      { href: "/contact", text: "Book Consultation" },
+      { href: "https://www.linkedin.com/in/muhammadzaid", text: "LinkedIn" },
     ],
   },
   {
-    label: "Resources",
+    label: "Legal",
     links: [
       { href: "/privacy", text: "Privacy" },
       { href: "/terms", text: "Terms" },
-      { href: "/refund", text: "Refunds" },
-      { href: "/faq", text: "FAQs" },
     ],
   },
 ];
@@ -55,12 +53,12 @@ export function SiteFooter() {
                 />
               </div>
               <div>
-                <p className="text-base font-semibold text-white">VirtuProse Solutions</p>
-                <p className="text-xs uppercase tracking-[0.4em] text-white/70">AI growth studio</p>
+                <p className="text-base font-semibold text-white">Muhammad Zaid</p>
+                <p className="text-xs uppercase tracking-[0.4em] text-white/70">Strategic Automation</p>
               </div>
             </div>
             <p className="max-w-xl text-sm text-white/70">
-              intelligent growth engines for ambitious brands
+              Leveraging 10 years of experience to build intelligent growth engines for ambitious brands.
             </p>
             <div className="flex flex-wrap gap-2 text-xs text-white/80">
               <span className="rounded-full border border-white/20 px-3 py-1">Global delivery</span>
@@ -102,8 +100,8 @@ export function SiteFooter() {
         </div>
         <div className="flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-6 text-xs text-white/60">
           <div className="flex flex-wrap gap-3">
-            <span>© {new Date().getFullYear()} VirtuProse Solutions</span>
-            <span>Secure · Global · Remote-first</span>
+            <span>© {new Date().getFullYear()} Muhammad Zaid · All Rights Reserved</span>
+            <span>Backed by VirtuProse Solutions</span>
           </div>
           <div className="flex flex-wrap gap-3">
             <Link href="/privacy" className="hover:text-white">
